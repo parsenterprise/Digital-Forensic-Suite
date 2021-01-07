@@ -10,7 +10,7 @@ usb: sd0a, sd1a, sd0b, sd1b
 > su >> export PKG_PATH
 > su >> pkg_add pkgin
 > pkgin install nano sudo fam dbus hal ratpoison
-> irBSD ALL=(ALL) ALL >> /usr/pkg/etc/sudoers
+> PCLITEOS ALL=(ALL) ALL >> /usr/pkg/etc/sudoers
 > sudo nano /usr/pkg/etc/pkgin/repositories.conf
 > https://cdn.netbsd.org/pub/pkgsrc/packages/NetBSD/amd64/version/All
 > sudo pkgin update
@@ -23,10 +23,10 @@ usb: sd0a, sd1a, sd0b, sd1b
 > sudo ln -s ~/.xinitrc ~/.xsession
 > sudo chmod u+x ~/.xsession
 > sudo nano /etc/ttys >> set console off
-> cd /home/irBSD
+> cd /home/PCLITEOS
 > sudo dkctl sd0 or disklabel sd0 or fdisk sd0
-> clone >> sudo dd if=/dev/sd0 bs=1m count=7180 | xz -c -9 > /path/to/irBSD.img.xz
-> restore >> unxz -c /path/to/irBSD.img.xz | sudo dd of=/dev/sd0 bs=1m
+> clone >> sudo dd if=/dev/sd0 bs=1m count=7180 | xz -c -9 > /path/to/PCLITEOS.img.xz
+> restore >> unxz -c /path/to/PCLITEOS.img.xz | sudo dd of=/dev/sd0 bs=1m
 > cat | less /var/db/pkgin/pkg_install-err.log
 > cat | less /var/log/messages
 
