@@ -1,0 +1,63 @@
+
+hdd: wd0a, wd1a, wd0b, wd1b
+odd: cd0a, cd1a, cd0b, cd1b
+usb: sd0a, sd1a, sd0b, sd1b
+
+> gunzip NetBSD-version-amd64-install.img.gz
+> dd if=NetBSD-version-amd64-install.img of=/dev/sd0 bs=1m
+> Partitioning 5GB for the root and 2GB for the swap
+> su >> PKG_PATH="https://cdn.netbsd.org/pub/pkgsrc/packages/NetBSD/amd64/version/All"
+> su >> export PKG_PATH
+> su >> pkg_add pkgin
+> pkgin install nano sudo fam dbus hal ratpoison
+> irBSD ALL=(ALL) ALL >> /usr/pkg/etc/sudoers
+> sudo nano /usr/pkg/etc/pkgin/repositories.conf
+> https://cdn.netbsd.org/pub/pkgsrc/packages/NetBSD/amd64/version/All
+> sudo pkgin update
+> sudo cp /usr/pkg/share/examples/rc.d/famd /etc/rc.d/
+> sudo cp /usr/pkg/share/examples/rc.d/dbus /etc/rc.d/
+> sudo cp /usr/pkg/share/examples/rc.d/hal /etc/rc.d/
+> sudo nano /etc/rc.conf
+> xdm=YES >> rpcbind=YES >> famd=YES >> dbus=YES >> hal=YES
+> sudo nano ~/.xinitrc >> exec /usr/pkg/bin/ratpoison
+> sudo ln -s ~/.xinitrc ~/.xsession
+> sudo chmod u+x ~/.xsession
+> sudo nano /etc/ttys >> set console off
+> cd /home/irBSD
+> sudo dkctl sd0 or disklabel sd0 or fdisk sd0
+> clone >> sudo dd if=/dev/sd0 bs=1m count=7180 | xz -c -9 > /path/to/irBSD.img.xz
+> restore >> unxz -c /path/to/irBSD.img.xz | sudo dd of=/dev/sd0 bs=1m
+> cat | less /var/db/pkgin/pkg_install-err.log
+> cat | less /var/log/messages
+
+
+/etc/rc.conf settings
+=====================
+
+hostname=localhost
+dhcpcd=YES
+dhcpcd_flags="-qM re0"
+wscons=YES
+clear_tmp=YES
+sshd=YES
+ntpd=YES
+rtclocaltime=YES
+
+
+~/.ratpoisonrc settings
+=======================
+
+set bgcolor black
+set border 0
+set fgcolor yellow
+set font terminus
+set padding 0 0 0 13
+set winname class
+set xsetroot -cursor_name left_ptr
+exec conky -c ~/.conkyrc
+exec feh --bg-scale ~/wallpaper.png
+exec rpws init 5 -k
+exec xscreensaver -no-splash
+bind Print Screenshot
+alias Screenshot exec scrot ~/ss-$(date +%F).png
+chdir
